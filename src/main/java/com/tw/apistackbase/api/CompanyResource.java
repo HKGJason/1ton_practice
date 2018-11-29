@@ -12,12 +12,16 @@ public class CompanyResource {
     private CompanyRepository companyRepository;
 
     @GetMapping(produces = {"application/json"})
-    public Iterable<Company> list() {
+    public Iterable<Company> list()
+    {
         return companyRepository.findAll();
     }
 
     @PostMapping(produces = {"application/json"})
     public void add(@RequestBody Company company) {
+        company.getEmployees().stream().forEach(
+                employee -> employee.setCompany(company)
+        );
         companyRepository.save(company);
     }
 }
